@@ -1,0 +1,14 @@
+.list {
+  @media (min-width: 768px) {
+    width: 600px;
+  }
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.search {
+  @media (min-width: 500px) {
+    width: 500px;
+  }
+  width: 300px;
+}

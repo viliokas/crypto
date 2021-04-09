@@ -1,0 +1,31 @@
+<div style="padding-top: 20px; width: 100%; text-align: -webkit-center">
+  <mat-form-field class="search">
+    <mat-label>Find your coin here</mat-label>
+    <input matInput type="text" [(ngModel)]="searchValue" />
+    <button
+      mat-button
+      *ngIf="searchValue"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="searchValue = ''"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="list">
+    <mat-progress-bar
+      mode="indeterminate"
+      *ngIf="assets.length === 0"
+    ></mat-progress-bar>
+    <div
+      *ngFor="let asset of assets | search: searchValue"
+      style="padding: 1rem"
+    >
+      <app-asset
+        (toggleFavorite)="toggleFavorite($event)"
+        [asset]="asset"
+      ></app-asset>
+    </div>
+  </div>
+</div>
