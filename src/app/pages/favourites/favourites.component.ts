@@ -9,7 +9,5 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 export class FavouritesComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {
-    console.log('favourites');
-  }
+  ngOnInit(): void {}
 }

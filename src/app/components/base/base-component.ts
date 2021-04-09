@@ -22,7 +22,6 @@ export class BaseComponent implements OnDestroy {
   public ngOnDestroy() {
     this.isAlive$.next();
     this.isAlive$.complete();
-    console.log('destroyed');
   }
 
   protected unsubsribeOnDestroy = (
