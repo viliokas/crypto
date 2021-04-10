@@ -1,4 +1,3 @@
-// base-component.ts
 import { Component, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';

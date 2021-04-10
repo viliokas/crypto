@@ -21,12 +21,12 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
   @Input() favouriteMode: boolean = false;
   assets: Asset[] = [];
   favoriteAssets: string[] = [];
+  searchValue = '';
   forkJoinAssetsAPI = combineLatest([
     this.coinService.getAssets(),
     this.coinService.getAssetsIcons(5),
   ]);
 
-  searchValue = '';
   constructor(private coinService: CoinService, private cd: ChangeDetectorRef) {
     super();
   }
@@ -36,7 +36,8 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
   }
 
   // Sockets could be used.
-  // Best solution to use infinity scroll to load data on scroll
+  // Did not found pagination in coinapi APIs.
+  // Best solution to use infinity scroll to load data on scroll for better UX.
 
   liveAssetsRefresh() {
     timer(0, 1000)

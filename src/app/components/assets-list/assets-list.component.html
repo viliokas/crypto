@@ -17,7 +17,7 @@
     <mat-progress-bar
       class="search"
       mode="indeterminate"
-      *ngIf="assets.length === 0"
+      *ngIf="assets.length === 0 && !favouriteMode"
     ></mat-progress-bar>
     <div
       *ngFor="let asset of assets | search: searchValue"
