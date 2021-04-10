@@ -38,7 +38,6 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
   // Sockets could be used.
   // Did not found pagination in coinapi APIs.
   // Best solution to use infinity scroll to load data on scroll for better UX.
-
   liveAssetsRefresh() {
     timer(0, 1000)
       .pipe(
@@ -49,11 +48,16 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
         this.getFavourites();
         let icons = data[1];
         let assets = data[0]
+          // filter so only crypto assets would be shown.
+          // slice 200, because response is to big, have to manage it the other way.
+          // also instead of refreshing whole list we can go trough list and refresh only assets prices instead of resfreshing whole data.
+          // there is a lot of room for solution optimisation.
           .filter(
             (asset: any) =>
               asset.type_is_crypto === 1 && asset.volume_1day_usd !== 0
           )
           .slice(0, 200);
+
         this.assets = assets.map((asset: Asset) => {
           asset.favourite = this.favoriteAssets.includes(asset.asset_id);
           asset.iconUrl = icons.find(
