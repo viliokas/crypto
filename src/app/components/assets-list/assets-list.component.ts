@@ -47,11 +47,11 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
       .subscribe((data) => {
         this.getFavourites();
         let icons = data[1];
+        // filter so only crypto assets would be shown.
+        // slice 200, because response is to big, have to manage it the other way.
+        // also instead of refreshing whole list we can go trough list and refresh only assets prices instead of resfreshing whole data.
+        // there is a lot of room for solution optimisation.
         let assets = data[0]
-          // filter so only crypto assets would be shown.
-          // slice 200, because response is to big, have to manage it the other way.
-          // also instead of refreshing whole list we can go trough list and refresh only assets prices instead of resfreshing whole data.
-          // there is a lot of room for solution optimisation.
           .filter(
             (asset: any) =>
               asset.type_is_crypto === 1 && asset.volume_1day_usd !== 0
