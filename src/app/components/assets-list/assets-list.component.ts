@@ -24,7 +24,7 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
   searchValue = '';
   forkJoinAssetsAPI = combineLatest([
     this.coinService.getAssets(),
-    this.coinService.getAssetsIcons(5),
+    this.coinService.getAssetsIcons(32),
   ]);
 
   constructor(private coinService: CoinService, private cd: ChangeDetectorRef) {
@@ -36,7 +36,7 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
   }
 
   // Sockets could be used.
-  // Did not found pagination in coinapi APIs.
+  // Did not found pagination or filters to manage amount of data of requests in coinapi APIs.
   // Best solution to use infinity scroll to load data on scroll for better UX.
   liveAssetsRefresh() {
     timer(0, 1000)
@@ -48,23 +48,36 @@ export class AssetsListComponent extends BaseComponent implements OnInit {
         this.getFavourites();
         let icons = data[1];
         // filter so only crypto assets would be shown.
-        // slice 200, because response is to big, have to manage it the other way.
-        // also instead of refreshing whole list we can go trough list and refresh only assets prices instead of resfreshing whole data.
-        // there is a lot of room for solution optimisation.
-        let assets = data[0]
+        // TODO slice 200, because response is to big, have to manage it the other way.
+        let tempAssets = data[0]
           .filter(
             (asset: any) =>
               asset.type_is_crypto === 1 && asset.volume_1day_usd !== 0
           )
           .slice(0, 200);
 
-        this.assets = assets.map((asset: Asset) => {
+        // Assign each asset an icon
+        tempAssets = tempAssets.map((asset: Asset) => {
           asset.favourite = this.favoriteAssets.includes(asset.asset_id);
           asset.iconUrl = icons.find(
             (icon: any) => icon.asset_id === asset.asset_id
           )?.url;
           return asset;
         });
+        // Update assets price
+        if (this.assets.length > 0) {
+          this.assets = this.assets.map((asset: Asset) => {
+            for (let tempAsset of tempAssets) {
+              if (tempAsset.asset_id === asset.asset_id) {
+                asset.price_usd = tempAsset.price_usd;
+                break;
+              }
+            }
+            return asset;
+          });
+        } else {
+          this.assets = tempAssets;
+        }
 
         if (this.favouriteMode) {
           this.assets = this.assets.filter((asset) => asset.favourite);
